@@ -1,9 +1,10 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Adrian {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Task[] tasks = new Task[100];;
+        ArrayList<Task> tasks = new ArrayList<>();
         int number = 0;
         String banner = "    _       _      _             \n"
                 + "   / \\   __| |_ __(_) __ _ _ __  \n"
@@ -37,8 +38,8 @@ public class Adrian {
                 if (input.equals("list")) {
                     System.out.println("Here are the tasks in your list:");
 
-                    for (int i = 0; i < number; i++) {
-                        System.out.println((i + 1) + "." + tasks[i]);
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println((i + 1) + "." + tasks.get(i));
                     }
 
                 } else if (input.equals("todo")) {
@@ -53,15 +54,13 @@ public class Adrian {
                                 "The description of a todo cannot be empty.");
                     }
 
-                    tasks[number] = new Todo(description);
+                    Task task = new Todo(description);
+                    tasks.add(task);
 
                     System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + tasks[number]);
-
-                    number++;
-
-                    System.out.println(
-                            "Now you have " + number + " tasks in the list.");
+                    System.out.println("  " + task);
+                    System.out.println("Now you have " + tasks.size()
+                            + " tasks in the list.");
 
                 } else if (input.equals("deadline")) {
                     throw new AdrianException(
@@ -91,15 +90,13 @@ public class Adrian {
                                 "The deadline time cannot be empty.");
                     }
 
-                    tasks[number] = new Deadline(description, by);
+                    Task task = new Deadline(description, by);
+                    tasks.add(task);
 
                     System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + tasks[number]);
-
-                    number++;
-
-                    System.out.println(
-                            "Now you have " + number + " tasks in the list.");
+                    System.out.println("  " + task);
+                    System.out.println("Now you have " + tasks.size()
+                            + " tasks in the list.");
 
                 } else if (input.equals("event")) {
                     throw new AdrianException(
@@ -133,32 +130,57 @@ public class Adrian {
                                 "The event start and end times cannot be empty.");
                     }
 
-                    tasks[number] = new Event(description, from, to);
+                    Task task = new Event(description, from, to);
+                    tasks.add(task);
 
                     System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + tasks[number]);
+                    System.out.println("  " + task);
+                    System.out.println("Now you have " + tasks.size()
+                            + " tasks in the list.");
 
-                    number++;
-
-                    System.out.println(
-                            "Now you have " + number + " tasks in the list.");
+                } else if (input.equals("mark")) {
+                    throw new AdrianException(
+                            "Please specify which task to mark.");
 
                 } else if (input.startsWith("mark ")) {
-                    int taskNumber = getTaskNumber(input, "mark", number);
+                    int taskNumber =
+                            getTaskNumber(input, "mark", tasks.size());
 
-                    tasks[taskNumber - 1].markAsDone();
+                    Task task = tasks.get(taskNumber - 1);
+                    task.markAsDone();
 
                     System.out.println("Nice! I've marked this task as done:");
-                    System.out.println("  " + tasks[taskNumber - 1]);
+                    System.out.println("  " + task);
+
+                } else if (input.equals("unmark")) {
+                    throw new AdrianException(
+                            "Please specify which task to unmark.");
 
                 } else if (input.startsWith("unmark ")) {
-                    int taskNumber = getTaskNumber(input, "unmark", number);
+                    int taskNumber =
+                            getTaskNumber(input, "unmark", tasks.size());
 
-                    tasks[taskNumber - 1].markAsNotDone();
+                    Task task = tasks.get(taskNumber - 1);
+                    task.markAsNotDone();
 
                     System.out.println(
                             "OK, I've marked this task as not done yet:");
-                    System.out.println("  " + tasks[taskNumber - 1]);
+                    System.out.println("  " + task);
+
+                } else if (input.equals("delete")) {
+                    throw new AdrianException(
+                            "Please specify which task to delete.");
+
+                } else if (input.startsWith("delete ")) {
+                    int taskNumber =
+                            getTaskNumber(input, "delete", tasks.size());
+
+                    Task removedTask = tasks.remove(taskNumber - 1);
+
+                    System.out.println("Noted. I've removed this task:");
+                    System.out.println("  " + removedTask);
+                    System.out.println("Now you have " + tasks.size()
+                            + " tasks in the list.");
 
                 } else {
                     throw new AdrianException(
@@ -166,7 +188,7 @@ public class Adrian {
                 }
 
             } catch (AdrianException e) {
-                System.out.println(e.getMessage());
+                System.out.println("OOPS!!! " + e.getMessage());
             }
 
             System.out.println(line);
