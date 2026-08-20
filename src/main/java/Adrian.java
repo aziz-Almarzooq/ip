@@ -3,6 +3,8 @@ import java.util.Scanner;
 public class Adrian {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        String[] box = new String[100];
+        int number = 0;
         String banner = "    _       _      _             \n"
                 + "   / \\   __| |_ __(_) __ _ _ __  \n"
                 + "  / _ \\ / _` | '__| |/ _` | '_ \\ \n"
@@ -19,13 +21,24 @@ public class Adrian {
 
         String input = scanner.nextLine();
         while(!input.equals("bye")) {
-            System.out.println(" " + input);
-            System.out.println(line);
-            input = scanner.nextLine();
+            if(input.equals("list")){
+                System.out.println(line);
+                for(int i = 0; i<number;i++) {
+                    System.out.println(i+1 + ". " + box[i]);
+                }
+                System.out.println(line);
+            }
+            else {
+                box[number] = input;
+                number++;
+                System.out.println("added: " + input);
+                System.out.println(line);
+            }
+                input = scanner.nextLine();
 
         }
 
-
+        System.out.println(line);
         System.out.println("Bye. Hope to see you again soon!");
         System.out.println(line);
         scanner.close();
