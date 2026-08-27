@@ -1,8 +1,14 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Adrian {
+    private static final DateTimeFormatter INPUT_FORMAT =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Task> tasks;
@@ -99,7 +105,16 @@ public class Adrian {
                                 "The deadline time cannot be empty.");
                     }
 
-                    Task task = new Deadline(description, by);
+                    LocalDateTime dateTime;
+
+                    try {
+                        dateTime = LocalDateTime.parse(by, INPUT_FORMAT);
+                    } catch (DateTimeParseException e) {
+                        throw new AdrianException(
+                                "Please use date format yyyy-MM-dd HHmm.");
+                    }
+
+                    Task task = new Deadline(description, dateTime);
                     tasks.add(task);
                     Storage.saveTasks(tasks);
 
@@ -140,7 +155,18 @@ public class Adrian {
                                 "The event start and end times cannot be empty.");
                     }
 
-                    Task task = new Event(description, from, to);
+                    LocalDateTime fromDateTime;
+                    LocalDateTime toDateTime;
+
+                    try {
+                        fromDateTime = LocalDateTime.parse(from, INPUT_FORMAT);
+                        toDateTime = LocalDateTime.parse(to, INPUT_FORMAT);
+                    } catch (DateTimeParseException e) {
+                        throw new AdrianException(
+                                "Please use date format yyyy-MM-dd HHmm.");
+                    }
+
+                    Task task = new Event(description, fromDateTime, toDateTime);
                     tasks.add(task);
                     Storage.saveTasks(tasks);
 

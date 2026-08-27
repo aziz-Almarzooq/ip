@@ -3,6 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
 
 public class Storage {
     private static final Path FILE_PATH = Path.of("data", "adrian.txt");
@@ -44,10 +45,15 @@ public class Storage {
 
         if (type.equals("T")) {
             task = new Todo(parts[2]);
+
         } else if (type.equals("D")) {
-            task = new Deadline(parts[2], parts[3]);
+            LocalDateTime by = LocalDateTime.parse(parts[3]);
+            task = new Deadline(parts[2], by);
+
         } else {
-            task = new Event(parts[2], parts[3], parts[4]);
+            LocalDateTime from = LocalDateTime.parse(parts[3]);
+            LocalDateTime to = LocalDateTime.parse(parts[4]);
+            task = new Event(parts[2], from, to);
         }
 
         if (isDone) {
