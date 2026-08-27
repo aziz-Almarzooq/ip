@@ -1,10 +1,19 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.IOException;
 
 public class Adrian {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>();
+        ArrayList<Task> tasks;
+
+        try {
+            tasks = Storage.loadTasks();
+        } catch (IOException e) {
+            System.out.println("OOPS!!! Could not load saved tasks.");
+            tasks = new ArrayList<>();
+        }
+
         String banner = "    _       _      _             \n"
                 + "   / \\   __| |_ __(_) __ _ _ __  \n"
                 + "  / _ \\ / _` | '__| |/ _` | '_ \\ \n"
@@ -55,6 +64,7 @@ public class Adrian {
 
                     Task task = new Todo(description);
                     tasks.add(task);
+                    Storage.saveTasks(tasks);
 
                     System.out.println("Got it. I've added this task:");
                     System.out.println("  " + task);
@@ -91,6 +101,7 @@ public class Adrian {
 
                     Task task = new Deadline(description, by);
                     tasks.add(task);
+                    Storage.saveTasks(tasks);
 
                     System.out.println("Got it. I've added this task:");
                     System.out.println("  " + task);
@@ -131,6 +142,7 @@ public class Adrian {
 
                     Task task = new Event(description, from, to);
                     tasks.add(task);
+                    Storage.saveTasks(tasks);
 
                     System.out.println("Got it. I've added this task:");
                     System.out.println("  " + task);
@@ -147,6 +159,7 @@ public class Adrian {
 
                     Task task = tasks.get(taskNumber - 1);
                     task.markAsDone();
+                    Storage.saveTasks(tasks);
 
                     System.out.println("Nice! I've marked this task as done:");
                     System.out.println("  " + task);
@@ -161,6 +174,7 @@ public class Adrian {
 
                     Task task = tasks.get(taskNumber - 1);
                     task.markAsNotDone();
+                    Storage.saveTasks(tasks);
 
                     System.out.println(
                             "OK, I've marked this task as not done yet:");
@@ -175,6 +189,7 @@ public class Adrian {
                             getTaskNumber(input, "delete", tasks.size());
 
                     Task removedTask = tasks.remove(taskNumber - 1);
+                    Storage.saveTasks(tasks);
 
                     System.out.println("Noted. I've removed this task:");
                     System.out.println("  " + removedTask);
@@ -188,6 +203,8 @@ public class Adrian {
 
             } catch (AdrianException e) {
                 System.out.println("OOPS!!! " + e.getMessage());
+            } catch (IOException e) {
+                System.out.println("OOPS!!! Could not save tasks.");
             }
 
             System.out.println(line);
