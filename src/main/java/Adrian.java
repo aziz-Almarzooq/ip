@@ -5,7 +5,6 @@ public class Adrian {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Task> tasks = new ArrayList<>();
-        int number = 0;
         String banner = "    _       _      _             \n"
                 + "   / \\   __| |_ __(_) __ _ _ __  \n"
                 + "  / _ \\ / _` | '__| |/ _` | '_ \\ \n"
