@@ -3,9 +3,9 @@ package adrian;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDateTime;
 
 /**
  * Saves tasks to disk and reconstructs them when the application starts.
@@ -22,8 +22,8 @@ public class Storage {
     /**
      * Writes all tasks to Adrian's data file, replacing its existing contents.
      *
-     * @param tasks tasks to save
-     * @throws IOException if the data directory or file cannot be written
+     * @param tasks tasks to save.
+     * @throws IOException if the data directory or file cannot be written.
      */
     public static void saveTasks(List<Task> tasks) throws IOException {
         Files.createDirectories(FILE_PATH.getParent());
@@ -40,8 +40,8 @@ public class Storage {
     /**
      * Loads all tasks from Adrian's data file.
      *
-     * @return tasks reconstructed from storage, or an empty list if no data file exists
-     * @throws IOException if the data file cannot be read
+     * @return tasks reconstructed from storage, or an empty list if no data file exists.
+     * @throws IOException if the data file cannot be read.
      */
     public static ArrayList<Task> loadTasks() throws IOException {
         ArrayList<Task> tasks = new ArrayList<>();
@@ -62,8 +62,8 @@ public class Storage {
     /**
      * Reconstructs a task from one line of stored task data.
      *
-     * @param line serialized task data
-     * @return task represented by the stored data
+     * @param line serialized task data.
+     * @return task represented by the stored data.
      */
     private static Task parseTask(String line) {
         String[] parts = line.split(" \\| ");
@@ -74,11 +74,9 @@ public class Storage {
 
         if (taskTypeSymbol.equals("T")) {
             task = new Todo(parts[2]);
-
         } else if (taskTypeSymbol.equals("D")) {
             LocalDateTime dueDateTime = LocalDateTime.parse(parts[3]);
             task = new Deadline(parts[2], dueDateTime);
-
         } else {
             LocalDateTime startDateTime = LocalDateTime.parse(parts[3]);
             LocalDateTime endDateTime = LocalDateTime.parse(parts[4]);

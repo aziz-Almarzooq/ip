@@ -27,17 +27,17 @@ public class Ui {
      * Displays the application banner and welcome message.
      */
     public void showWelcome() {
-        showLine();
+        showDivider();
         System.out.println(BANNER);
         System.out.println("Hello! I'm Adrian.");
         System.out.println("What can I do for you?");
-        showLine();
+        showDivider();
     }
 
     /**
      * Reads the next command entered by the user.
      *
-     * @return command entered by the user
+     * @return command entered by the user.
      */
     public String readCommand() {
         return scanner.nextLine();
@@ -47,22 +47,22 @@ public class Ui {
      * Displays the farewell message.
      */
     public void showGoodbye() {
-        showLine();
+        showDivider();
         System.out.println("Bye. Hope to see you again soon!");
-        showLine();
+        showDivider();
     }
 
     /**
      * Displays a horizontal separator line.
      */
-    public void showLine() {
+    public void showDivider() {
         System.out.println(DIVIDER);
     }
 
     /**
      * Displays all tasks with their one-based list numbers.
      *
-     * @param tasks tasks to display
+     * @param tasks tasks to display.
      */
     public void showTaskList(List<Task> tasks) {
         System.out.println("Here are the tasks in your list:");
@@ -75,8 +75,8 @@ public class Ui {
     /**
      * Displays confirmation that a task was added.
      *
-     * @param task task that was added
-     * @param taskCount total number of tasks after the addition
+     * @param task task that was added.
+     * @param taskCount total number of tasks after the addition.
      */
     public void showTaskAdded(Task task, int taskCount) {
         System.out.println("Got it. I've added this task:");
@@ -87,7 +87,7 @@ public class Ui {
     /**
      * Displays confirmation that a task was marked as completed.
      *
-     * @param task task that was marked
+     * @param task task that was marked.
      */
     public void showTaskMarked(Task task) {
         System.out.println("Nice! I've marked this task as done:");
@@ -97,7 +97,7 @@ public class Ui {
     /**
      * Displays confirmation that a task was marked as incomplete.
      *
-     * @param task task that was unmarked
+     * @param task task that was unmarked.
      */
     public void showTaskUnmarked(Task task) {
         System.out.println("OK, I've marked this task as not done yet:");
@@ -107,8 +107,8 @@ public class Ui {
     /**
      * Displays confirmation that a task was deleted.
      *
-     * @param task task that was deleted
-     * @param taskCount total number of tasks after the deletion
+     * @param task task that was deleted.
+     * @param taskCount total number of tasks after the deletion.
      */
     public void showTaskDeleted(Task task, int taskCount) {
         System.out.println("Noted. I've removed this task:");
@@ -119,7 +119,7 @@ public class Ui {
     /**
      * Displays an error caused by invalid user input.
      *
-     * @param message explanation of the error
+     * @param message explanation of the error.
      */
     public void showError(String message) {
         System.out.println("OOPS!!! " + message);

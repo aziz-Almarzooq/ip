@@ -18,9 +18,9 @@ public class Event extends Task {
     /**
      * Creates an incomplete event with the given description and time range.
      *
-     * @param description description of the event
-     * @param startDateTime date and time at which the event starts
-     * @param endDateTime date and time at which the event ends
+     * @param description description of the event.
+     * @param startDateTime date and time at which the event starts.
+     * @param endDateTime date and time at which the event ends.
      */
     public Event(String description, LocalDateTime startDateTime, LocalDateTime endDateTime) {
         super(description, TaskType.EVENT);
@@ -31,7 +31,7 @@ public class Event extends Task {
     /**
      * Returns the event in the format used for persistent storage.
      *
-     * @return serialized event data
+     * @return serialized event data.
      */
     @Override
     public String toDataString() {
@@ -43,7 +43,7 @@ public class Event extends Task {
     /**
      * Returns a display-friendly representation containing the event time range.
      *
-     * @return formatted event description
+     * @return formatted event description.
      */
     @Override
     public String toString() {

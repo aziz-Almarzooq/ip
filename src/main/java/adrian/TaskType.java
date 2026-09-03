@@ -16,7 +16,7 @@ public enum TaskType {
     /**
      * Creates a task category with the given display symbol.
      *
-     * @param symbol symbol used to identify the category
+     * @param symbol symbol used to identify the category.
      */
     TaskType(String symbol) {
         this.symbol = symbol;
@@ -25,7 +25,7 @@ public enum TaskType {
     /**
      * Returns the single-character symbol for this task category.
      *
-     * @return task category symbol
+     * @return task category symbol.
      */
     @Override
     public String toString() {

@@ -21,7 +21,7 @@ public class Adrian {
     /**
      * Starts the application and processes commands until the user exits.
      *
-     * @param args command-line arguments; not used by Adrian
+     * @param args command-line arguments; not used by Adrian.
      */
     public static void main(String[] args) {
         Ui ui = new Ui();
@@ -45,7 +45,7 @@ public class Adrian {
                     break;
                 }
 
-                ui.showLine();
+                ui.showDivider();
 
                 if (input.equals("list")) {
                     ui.showTaskList(tasks);
@@ -174,7 +174,7 @@ public class Adrian {
                 ui.showSavingError();
             }
 
-            ui.showLine();
+            ui.showDivider();
         }
 
         ui.close();
@@ -183,11 +183,11 @@ public class Adrian {
     /**
      * Extracts and validates a task number from a command.
      *
-     * @param input full command entered by the user
-     * @param command command word that precedes the task number
-     * @param numberOfTasks number of tasks currently available
-     * @return the validated one-based task number
-     * @throws InvalidInputException if the number is invalid or does not identify an existing task
+     * @param input full command entered by the user.
+     * @param command command word that precedes the task number.
+     * @param numberOfTasks number of tasks currently available.
+     * @return the validated one-based task number.
+     * @throws InvalidInputException if the number is invalid or does not identify an existing task.
      */
     private static int getTaskNumber(String input, String command, int numberOfTasks)
             throws InvalidInputException {

@@ -14,8 +14,8 @@ public class Task {
     /**
      * Creates an incomplete task with the given description and type.
      *
-     * @param description description of the task
-     * @param type category of the task
+     * @param description description of the task.
+     * @param type category of the task.
      */
     public Task(String description, TaskType type) {
         this.description = description;
@@ -40,7 +40,7 @@ public class Task {
     /**
      * Returns the symbol used to display this task's completion status.
      *
-     * @return {@code X} if completed, or a space if incomplete
+     * @return {@code X} if completed, or a space if incomplete.
      */
     public String getStatusIcon() {
         return isDone ? "X" : " ";
@@ -49,7 +49,7 @@ public class Task {
     /**
      * Returns the task in the format used for persistent storage.
      *
-     * @return serialized completion status and description
+     * @return serialized completion status and description.
      */
     public String toDataString() {
         return (isDone ? "1" : "0") + " | " + description;
@@ -58,7 +58,7 @@ public class Task {
     /**
      * Returns a display-friendly representation of this task.
      *
-     * @return formatted task type, completion status, and description
+     * @return formatted task type, completion status, and description.
      */
     @Override
     public String toString() {

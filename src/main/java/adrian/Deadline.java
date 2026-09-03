@@ -16,8 +16,8 @@ public class Deadline extends Task {
     /**
      * Creates an incomplete deadline with the given description and due date.
      *
-     * @param description description of the task
-     * @param dueDateTime date and time by which the task must be completed
+     * @param description description of the task.
+     * @param dueDateTime date and time by which the task must be completed.
      */
     public Deadline(String description, LocalDateTime dueDateTime) {
         super(description, TaskType.DEADLINE);
@@ -27,7 +27,7 @@ public class Deadline extends Task {
     /**
      * Returns a display-friendly representation containing the due date and time.
      *
-     * @return formatted deadline description
+     * @return formatted deadline description.
      */
     @Override
     public String toString() {
@@ -38,7 +38,7 @@ public class Deadline extends Task {
     /**
      * Returns the deadline in the format used for persistent storage.
      *
-     * @return serialized deadline data
+     * @return serialized deadline data.
      */
     @Override
     public String toDataString() {
