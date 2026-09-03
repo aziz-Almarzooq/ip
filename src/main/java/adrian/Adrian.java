@@ -49,6 +49,24 @@ public class Adrian {
 
                 if (input.equals("list")) {
                     ui.showTaskList(tasks);
+                } else if (input.equals("find")) {
+                    throw new InvalidInputException("Please specify a keyword to find.");
+                } else if (input.startsWith("find ")) {
+                    String keyword = input.substring(5).trim();
+
+                    if (keyword.isEmpty()) {
+                        throw new InvalidInputException("Please specify a keyword to find.");
+                    }
+
+                    ArrayList<Task> matchingTasks = new ArrayList<>();
+
+                    for (Task task : tasks) {
+                        if (task.matchesDescription(keyword)) {
+                            matchingTasks.add(task);
+                        }
+                    }
+
+                    ui.showMatchingTasks(matchingTasks);
                 } else if (input.equals("todo")) {
                     throw new InvalidInputException("The description of a todo cannot be empty.");
                 } else if (input.startsWith("todo ")) {

@@ -1,5 +1,7 @@
 package adrian;
 
+import java.util.Locale;
+
 /**
  * Represents a task tracked by Adrian.
  */
@@ -44,6 +46,16 @@ public class Task {
      */
     public String getStatusIcon() {
         return isDone ? "X" : " ";
+    }
+
+    /**
+     * Returns whether this task's description contains the keyword, ignoring letter case.
+     *
+     * @param keyword keyword to search for.
+     * @return true if the description contains the keyword; false otherwise.
+     */
+    public boolean matchesDescription(String keyword) {
+        return description.toLowerCase(Locale.ROOT).contains(keyword.toLowerCase(Locale.ROOT));
     }
 
     /**
