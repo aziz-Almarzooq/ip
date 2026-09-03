@@ -6,22 +6,31 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests the display and storage representations of {@link Deadline} objects.
+ */
 public class DeadlineTest {
 
+    /**
+     * Verifies the display representation of an incomplete deadline.
+     */
     @Test
     public void toString_unmarkedDeadline_correctString() {
-        LocalDateTime dateTime = LocalDateTime.of(2026, 6, 6, 18, 0);
-        Deadline deadline = new Deadline("return book", dateTime);
+        LocalDateTime dueDateTime = LocalDateTime.of(2026, 6, 6, 18, 0);
+        Deadline deadline = new Deadline("return book", dueDateTime);
 
         assertEquals(
                 "[D][ ] return book (by: Jun 06 2026, 6:00 pm)",
                 deadline.toString());
     }
 
+    /**
+     * Verifies the display representation of a completed deadline.
+     */
     @Test
     public void toString_markedDeadline_correctString() {
-        LocalDateTime dateTime = LocalDateTime.of(2026, 6, 6, 18, 0);
-        Deadline deadline = new Deadline("return book", dateTime);
+        LocalDateTime dueDateTime = LocalDateTime.of(2026, 6, 6, 18, 0);
+        Deadline deadline = new Deadline("return book", dueDateTime);
         deadline.markAsDone();
 
         assertEquals(
@@ -29,10 +38,13 @@ public class DeadlineTest {
                 deadline.toString());
     }
 
+    /**
+     * Verifies the storage representation of a completed deadline.
+     */
     @Test
     public void toDataString_markedDeadline_correctString() {
-        LocalDateTime dateTime = LocalDateTime.of(2026, 6, 6, 18, 0);
-        Deadline deadline = new Deadline("return book", dateTime);
+        LocalDateTime dueDateTime = LocalDateTime.of(2026, 6, 6, 18, 0);
+        Deadline deadline = new Deadline("return book", dueDateTime);
         deadline.markAsDone();
 
         assertEquals(
