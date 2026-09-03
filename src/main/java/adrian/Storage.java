@@ -11,12 +11,24 @@ import java.util.List;
  * Saves tasks to disk and reconstructs them when the application starts.
  */
 public class Storage {
-    private static final Path FILE_PATH = Path.of("data", "adrian.txt");
+    private static final Path DEFAULT_FILE_PATH = Path.of("data", "adrian.txt");
+
+    private final Path filePath;
 
     /**
      * Creates a storage service for Adrian's task data.
      */
     public Storage() {
+        this(DEFAULT_FILE_PATH);
+    }
+
+    /**
+     * Creates a storage service that uses the specified task data file.
+     *
+     * @param filePath location of the task data file.
+     */
+    Storage(Path filePath) {
+        this.filePath = filePath;
     }
 
     /**
@@ -25,8 +37,8 @@ public class Storage {
      * @param tasks tasks to save.
      * @throws IOException if the data directory or file cannot be written.
      */
-    public static void saveTasks(List<Task> tasks) throws IOException {
-        Files.createDirectories(FILE_PATH.getParent());
+    public void saveTasks(List<Task> tasks) throws IOException {
+        Files.createDirectories(filePath.getParent());
 
         List<String> lines = new ArrayList<>();
 
@@ -34,7 +46,7 @@ public class Storage {
             lines.add(task.toDataString());
         }
 
-        Files.write(FILE_PATH, lines);
+        Files.write(filePath, lines);
     }
 
     /**
@@ -43,14 +55,14 @@ public class Storage {
      * @return tasks reconstructed from storage, or an empty list if no data file exists.
      * @throws IOException if the data file cannot be read.
      */
-    public static ArrayList<Task> loadTasks() throws IOException {
+    public ArrayList<Task> loadTasks() throws IOException {
         ArrayList<Task> tasks = new ArrayList<>();
 
-        if (!Files.exists(FILE_PATH)) {
+        if (!Files.exists(filePath)) {
             return tasks;
         }
 
-        List<String> lines = Files.readAllLines(FILE_PATH);
+        List<String> lines = Files.readAllLines(filePath);
 
         for (String line : lines) {
             tasks.add(parseTask(line));
