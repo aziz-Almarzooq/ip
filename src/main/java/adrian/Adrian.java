@@ -210,10 +210,7 @@ public class Adrian {
             throw new InvalidInputException("The description of a todo cannot be empty.");
         }
 
-        Task task = new Todo(description);
-        tasks.add(task);
-        storage.saveTasks(tasks);
-        return formatTaskAdded(task);
+        return addTask(new Todo(description));
     }
 
     /**
@@ -244,10 +241,7 @@ public class Adrian {
         }
 
         LocalDateTime dueDateTime = parseDateTime(dueDateTimeText);
-        Task task = new Deadline(description, dueDateTime);
-        tasks.add(task);
-        storage.saveTasks(tasks);
-        return formatTaskAdded(task);
+        return addTask(new Deadline(description, dueDateTime));
     }
 
     /**
@@ -281,7 +275,17 @@ public class Adrian {
 
         LocalDateTime startDateTime = parseDateTime(startDateTimeText);
         LocalDateTime endDateTime = parseDateTime(endDateTimeText);
-        Task task = new Event(description, startDateTime, endDateTime);
+        return addTask(new Event(description, startDateTime, endDateTime));
+    }
+
+    /**
+     * Adds a task, saves the updated list, and formats the confirmation message.
+     *
+     * @param task task to add.
+     * @return confirmation containing the added task and updated task count.
+     * @throws IOException if the updated task list cannot be saved.
+     */
+    private String addTask(Task task) throws IOException {
         tasks.add(task);
         storage.saveTasks(tasks);
         return formatTaskAdded(task);
