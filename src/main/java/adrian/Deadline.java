@@ -11,7 +11,7 @@ public class Deadline extends Task {
             DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
 
     /** Date and time by which this task must be completed. */
-    protected LocalDateTime dueDateTime;
+    private final LocalDateTime dueDateTime;
 
     /**
      * Creates an incomplete deadline with the given description and due date.

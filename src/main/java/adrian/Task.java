@@ -7,11 +7,11 @@ import java.util.Locale;
  */
 public class Task {
     /** Description of the work represented by this task. */
-    protected String description;
+    private final String description;
     /** Whether this task has been completed. */
-    protected boolean isDone;
+    private boolean isDone;
     /** Category used to identify and display this task. */
-    protected TaskType type;
+    private final TaskType type;
 
     /**
      * Creates an incomplete task with the given description and type.

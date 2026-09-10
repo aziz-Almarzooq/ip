@@ -11,9 +11,9 @@ public class Event extends Task {
             DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
 
     /** Date and time at which this event starts. */
-    protected LocalDateTime startDateTime;
+    private final LocalDateTime startDateTime;
     /** Date and time at which this event ends. */
-    protected LocalDateTime endDateTime;
+    private final LocalDateTime endDateTime;
 
     /**
      * Creates an incomplete event with the given description and time range.
