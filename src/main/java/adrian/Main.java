@@ -42,24 +42,52 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
+        configureDialogContainer();
+        configureScrollPane();
+        configureInputControls();
+        AnchorPane mainLayout = createMainLayout();
+        showStage(stage, mainLayout);
+    }
+
+    /**
+     * Configures the message container and adds Adrian's welcome message.
+     */
+    private void configureDialogContainer() {
         dialogContainer.setPadding(new Insets(10.0));
         dialogContainer.setSpacing(10.0);
         dialogContainer.getStyleClass().add("dialog-container");
         dialogContainer.getChildren().add(
                 DialogBox.getAdrianDialog(adrian.getWelcomeMessage(), adrianImage));
+    }
 
+    /**
+     * Configures the scrolling behavior for the message container.
+     */
+    private void configureScrollPane() {
         scrollPane.setContent(dialogContainer);
         scrollPane.getStyleClass().add("dialog-scroll-pane");
         scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         dialogContainer.heightProperty().addListener(observable -> scrollPane.setVvalue(1.0));
+    }
 
+    /**
+     * Configures the text field and button used to submit commands.
+     */
+    private void configureInputControls() {
         userInput.setPromptText("Enter a command...");
         sendButton.setPrefWidth(60.0);
         userInput.setOnAction(event -> handleUserInput());
         sendButton.setOnAction(event -> handleUserInput());
+    }
 
+    /**
+     * Creates and anchors the controls in the application's root layout.
+     *
+     * @return configured root layout.
+     */
+    private AnchorPane createMainLayout() {
         AnchorPane mainLayout = new AnchorPane();
         mainLayout.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         mainLayout.getStyleClass().add("main-layout");
@@ -77,6 +105,16 @@ public class Main extends Application {
         AnchorPane.setRightAnchor(sendButton, 5.0);
         AnchorPane.setBottomAnchor(sendButton, 5.0);
 
+        return mainLayout;
+    }
+
+    /**
+     * Configures and displays the primary application window.
+     *
+     * @param stage primary window supplied by JavaFX.
+     * @param mainLayout root layout to display.
+     */
+    private void showStage(Stage stage, AnchorPane mainLayout) {
         Scene scene = new Scene(mainLayout);
         scene.getStylesheets().add(getResource("/styles/dark-theme.css").toExternalForm());
         stage.setTitle("Adrian");
