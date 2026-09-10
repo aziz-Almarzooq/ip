@@ -52,15 +52,6 @@ public class Ui {
     }
 
     /**
-     * Displays the farewell message.
-     */
-    public void showGoodbye() {
-        showDivider();
-        System.out.println("Bye. Hope to see you again soon!");
-        showDivider();
-    }
-
-    /**
      * Displays a horizontal separator line.
      */
     public void showDivider() {

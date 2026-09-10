@@ -70,11 +70,6 @@ public class Adrian {
         while (!adrian.isExitRequested()) {
             String input = ui.readCommand();
 
-            if (input.trim().equals("bye")) {
-                ui.showGoodbye();
-                break;
-            }
-
             ui.showDivider();
             ui.showResponse(adrian.getResponse(input));
             ui.showDivider();
