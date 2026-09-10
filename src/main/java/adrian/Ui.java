@@ -44,6 +44,15 @@ public class Ui {
     }
 
     /**
+     * Displays a response produced by Adrian.
+     *
+     * @param response response to display.
+     */
+    public void showResponse(String response) {
+        System.out.println(response);
+    }
+
+    /**
      * Displays the farewell message.
      */
     public void showGoodbye() {
