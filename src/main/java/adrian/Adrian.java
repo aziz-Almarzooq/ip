@@ -35,6 +35,7 @@ public class Adrian {
      * @param storage storage service used to load and save tasks.
      */
     Adrian(Storage storage) {
+        assert storage != null : "Storage dependency must not be null";
         this.storage = storage;
 
         ArrayList<Task> loadedTasks;
@@ -357,6 +358,9 @@ public class Adrian {
      * @return formatted heading and task list.
      */
     private static String formatTaskList(String heading, List<Task> tasksToDisplay) {
+        assert heading != null : "Task-list heading must not be null";
+        assert tasksToDisplay != null : "Task list must not be null";
+
         StringBuilder response = new StringBuilder(heading);
 
         for (int i = 0; i < tasksToDisplay.size(); i++) {
@@ -376,6 +380,9 @@ public class Adrian {
      * @return formatted confirmation and updated task count.
      */
     private String formatTaskAdded(Task task) {
+        assert task != null : "Added task must not be null";
+        assert tasks.contains(task) : "Task must be added before formatting confirmation";
+
         return "Got it. I've added this task:\n  " + task
                 + "\nNow you have " + tasks.size() + " tasks in the list.";
     }
@@ -400,6 +407,8 @@ public class Adrian {
                 throw new InvalidInputException("That task number does not exist.");
             }
 
+            assert taskNumber >= 1 && taskNumber <= numberOfTasks
+                    : "Validated task number must be within bounds";
             return taskNumber;
         } catch (NumberFormatException e) {
             throw new InvalidInputException("Please enter a valid task number.");
