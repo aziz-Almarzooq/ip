@@ -22,6 +22,7 @@ public class Main extends Application {
     private static final double WINDOW_HEIGHT = 680.0;
     private static final double MINIMUM_WINDOW_WIDTH = 360.0;
     private static final double MINIMUM_WINDOW_HEIGHT = 460.0;
+    private static final double SEND_BUTTON_WIDTH = 88.0;
 
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox dialogContainer = new VBox();
@@ -80,7 +81,7 @@ public class Main extends Application {
     private void configureInputControls() {
         userInput.setPromptText("Rocky, enter a mission command...");
         userInput.setPrefHeight(42.0);
-        sendButton.setPrefSize(76.0, 42.0);
+        sendButton.setPrefSize(SEND_BUTTON_WIDTH, 42.0);
         userInput.setOnAction(event -> handleUserInput());
         sendButton.setOnAction(event -> handleUserInput());
     }
@@ -101,7 +102,7 @@ public class Main extends Application {
         AnchorPane.setBottomAnchor(scrollPane, 66.0);
         AnchorPane.setLeftAnchor(scrollPane, 12.0);
 
-        AnchorPane.setRightAnchor(userInput, 100.0);
+        AnchorPane.setRightAnchor(userInput, SEND_BUTTON_WIDTH + 24.0);
         AnchorPane.setBottomAnchor(userInput, 12.0);
         AnchorPane.setLeftAnchor(userInput, 12.0);
 
