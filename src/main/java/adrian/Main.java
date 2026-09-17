@@ -18,8 +18,10 @@ import javafx.stage.Stage;
  * Displays the JavaFX user interface for Adrian.
  */
 public class Main extends Application {
-    private static final double WINDOW_WIDTH = 400.0;
-    private static final double WINDOW_HEIGHT = 600.0;
+    private static final double WINDOW_WIDTH = 520.0;
+    private static final double WINDOW_HEIGHT = 680.0;
+    private static final double MINIMUM_WINDOW_WIDTH = 360.0;
+    private static final double MINIMUM_WINDOW_HEIGHT = 460.0;
 
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox dialogContainer = new VBox();
@@ -53,8 +55,8 @@ public class Main extends Application {
      * Configures the message container and adds Adrian's welcome message.
      */
     private void configureDialogContainer() {
-        dialogContainer.setPadding(new Insets(10.0));
-        dialogContainer.setSpacing(10.0);
+        dialogContainer.setPadding(new Insets(14.0));
+        dialogContainer.setSpacing(8.0);
         dialogContainer.getStyleClass().add("dialog-container");
         dialogContainer.getChildren().add(
                 DialogBox.getAdrianDialog(adrian.getWelcomeMessage(), adrianImage));
@@ -77,7 +79,8 @@ public class Main extends Application {
      */
     private void configureInputControls() {
         userInput.setPromptText("Enter a command...");
-        sendButton.setPrefWidth(60.0);
+        userInput.setPrefHeight(42.0);
+        sendButton.setPrefSize(76.0, 42.0);
         userInput.setOnAction(event -> handleUserInput());
         sendButton.setOnAction(event -> handleUserInput());
     }
@@ -93,17 +96,17 @@ public class Main extends Application {
         mainLayout.getStyleClass().add("main-layout");
         mainLayout.getChildren().addAll(scrollPane, userInput, sendButton);
 
-        AnchorPane.setTopAnchor(scrollPane, 5.0);
-        AnchorPane.setRightAnchor(scrollPane, 5.0);
-        AnchorPane.setBottomAnchor(scrollPane, 45.0);
-        AnchorPane.setLeftAnchor(scrollPane, 5.0);
+        AnchorPane.setTopAnchor(scrollPane, 12.0);
+        AnchorPane.setRightAnchor(scrollPane, 12.0);
+        AnchorPane.setBottomAnchor(scrollPane, 66.0);
+        AnchorPane.setLeftAnchor(scrollPane, 12.0);
 
-        AnchorPane.setRightAnchor(userInput, 70.0);
-        AnchorPane.setBottomAnchor(userInput, 5.0);
-        AnchorPane.setLeftAnchor(userInput, 5.0);
+        AnchorPane.setRightAnchor(userInput, 100.0);
+        AnchorPane.setBottomAnchor(userInput, 12.0);
+        AnchorPane.setLeftAnchor(userInput, 12.0);
 
-        AnchorPane.setRightAnchor(sendButton, 5.0);
-        AnchorPane.setBottomAnchor(sendButton, 5.0);
+        AnchorPane.setRightAnchor(sendButton, 12.0);
+        AnchorPane.setBottomAnchor(sendButton, 12.0);
 
         return mainLayout;
     }
@@ -118,8 +121,9 @@ public class Main extends Application {
         Scene scene = new Scene(mainLayout);
         scene.getStylesheets().add(getResource("/styles/dark-theme.css").toExternalForm());
         stage.setTitle("Adrian");
-        stage.setMinWidth(WINDOW_WIDTH);
-        stage.setMinHeight(WINDOW_HEIGHT);
+        stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
+        stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
+        stage.setResizable(true);
         stage.setScene(scene);
         stage.show();
     }
@@ -134,8 +138,11 @@ public class Main extends Application {
             return;
         }
 
+        String response = adrian.getResponse(input);
         DialogBox userMessage = DialogBox.getUserDialog(input, userImage);
-        DialogBox adrianMessage = DialogBox.getAdrianDialog(adrian.getResponse(input), adrianImage);
+        DialogBox adrianMessage = response.startsWith("OOPS!!!")
+                ? DialogBox.getErrorDialog(response, adrianImage)
+                : DialogBox.getAdrianDialog(response, adrianImage);
 
         dialogContainer.getChildren().addAll(userMessage, adrianMessage);
         userInput.clear();
