@@ -28,8 +28,8 @@ public class Ui {
     public void showWelcome() {
         showDivider();
         System.out.println(BANNER);
-        System.out.println("Hello! I'm Adrian.");
-        System.out.println("What can I do for you?");
+        System.out.println("Adrian online. Hello, Rocky.");
+        System.out.println("Mission tasks ready. Amaze. Amaze. Amaze.");
         showDivider();
     }
 
@@ -62,7 +62,7 @@ public class Ui {
      * Displays an error indicating that saved tasks could not be loaded.
      */
     public void showLoadingError() {
-        System.out.println("OOPS!!! Could not load saved tasks.");
+        System.out.println("OOPS!!! Rocky, the mission log could not be loaded.");
     }
 
     /**

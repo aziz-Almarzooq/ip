@@ -26,7 +26,7 @@ public class Main extends Application {
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox dialogContainer = new VBox();
     private final TextField userInput = new TextField();
-    private final Button sendButton = new Button("Send");
+    private final Button sendButton = new Button("Transmit");
     private final Adrian adrian = new Adrian();
     private final Image userImage = loadImage("/images/rocky.jpeg");
     private final Image adrianImage = loadImage("/images/adrian.jpeg");
@@ -78,7 +78,7 @@ public class Main extends Application {
      * Configures the text field and button used to submit commands.
      */
     private void configureInputControls() {
-        userInput.setPromptText("Enter a command...");
+        userInput.setPromptText("Rocky, enter a mission command...");
         userInput.setPrefHeight(42.0);
         sendButton.setPrefSize(76.0, 42.0);
         userInput.setOnAction(event -> handleUserInput());
@@ -120,7 +120,7 @@ public class Main extends Application {
     private void showStage(Stage stage, AnchorPane mainLayout) {
         Scene scene = new Scene(mainLayout);
         scene.getStylesheets().add(getResource("/styles/dark-theme.css").toExternalForm());
-        stage.setTitle("Adrian");
+        stage.setTitle("Adrian // Mission Control");
         stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
         stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
         stage.setResizable(true);
