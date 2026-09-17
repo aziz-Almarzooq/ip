@@ -148,6 +148,11 @@ public class Adrian {
             throw new InvalidInputException("An event needs a description, /from time, and /to time.");
         } else if (input.startsWith("event ")) {
             return addEvent(input);
+        } else if (input.equals("duration")) {
+            throw new InvalidInputException(
+                    "A fixed-duration task needs a description and /for minutes.");
+        } else if (input.startsWith("duration ")) {
+            return addFixedDurationTask(input);
         } else if (input.equals("mark")) {
             throw new InvalidInputException("Please specify which task to mark.");
         } else if (input.startsWith("mark ")) {
@@ -271,6 +276,57 @@ public class Adrian {
         LocalDateTime startDateTime = parseDateTime(startDateTimeText);
         LocalDateTime endDateTime = parseDateTime(endDateTimeText);
         return addTask(new Event(description, startDateTime, endDateTime));
+    }
+
+    /**
+     * Adds a fixed-duration task described by the supplied command.
+     *
+     * @param input duration command containing the description and number of minutes.
+     * @return confirmation containing the added task and updated task count.
+     * @throws InvalidInputException if the description or duration is missing or invalid.
+     * @throws IOException if the updated task list cannot be saved.
+     */
+    private String addFixedDurationTask(String input) throws InvalidInputException, IOException {
+        String details = input.substring(8);
+        int forIndex = details.lastIndexOf(" /for");
+
+        if (forIndex == -1) {
+            throw new InvalidInputException("Please specify the task duration using /for.");
+        }
+
+        int durationStartIndex = forIndex + 5;
+
+        if (durationStartIndex < details.length()
+                && !Character.isWhitespace(details.charAt(durationStartIndex))) {
+            throw new InvalidInputException("Please specify the task duration using /for.");
+        }
+
+        String description = details.substring(0, forIndex).trim();
+        String durationText = details.substring(durationStartIndex).trim();
+
+        if (description.isEmpty()) {
+            throw new InvalidInputException(
+                    "The description of a fixed-duration task cannot be empty.");
+        }
+
+        if (durationText.isEmpty()) {
+            throw new InvalidInputException("The task duration cannot be empty.");
+        }
+
+        int durationInMinutes;
+
+        try {
+            durationInMinutes = Integer.parseInt(durationText);
+        } catch (NumberFormatException e) {
+            throw new InvalidInputException(
+                    "Please specify the duration as a whole number of minutes.");
+        }
+
+        if (durationInMinutes <= 0) {
+            throw new InvalidInputException("The task duration must be positive.");
+        }
+
+        return addTask(new FixedDurationTask(description, durationInMinutes));
     }
 
     /**

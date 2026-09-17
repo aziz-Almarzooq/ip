@@ -9,7 +9,9 @@ public enum TaskType {
     /** A task that must be completed by a specific date and time. */
     DEADLINE("D"),
     /** A task that takes place between a start and end date and time. */
-    EVENT("E");
+    EVENT("E"),
+    /** An unscheduled task that requires a fixed amount of time. */
+    FIXED_DURATION("F");
 
     private final String symbol;
 
