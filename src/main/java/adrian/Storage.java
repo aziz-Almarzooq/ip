@@ -76,6 +76,7 @@ public class Storage {
      *
      * @param line serialized task data.
      * @return task represented by the stored data.
+     * @throws IllegalArgumentException if the serialized task type is unsupported.
      */
     private static Task parseTask(String line) {
         String[] parts = line.split(" \\| ");
@@ -89,10 +90,15 @@ public class Storage {
         } else if (taskTypeSymbol.equals("D")) {
             LocalDateTime dueDateTime = LocalDateTime.parse(parts[3]);
             task = new Deadline(parts[2], dueDateTime);
-        } else {
+        } else if (taskTypeSymbol.equals("E")) {
             LocalDateTime startDateTime = LocalDateTime.parse(parts[3]);
             LocalDateTime endDateTime = LocalDateTime.parse(parts[4]);
             task = new Event(parts[2], startDateTime, endDateTime);
+        } else if (taskTypeSymbol.equals("F")) {
+            int durationInMinutes = Integer.parseInt(parts[3]);
+            task = new FixedDurationTask(parts[2], durationInMinutes);
+        } else {
+            throw new IllegalArgumentException("Unsupported task type: " + taskTypeSymbol);
         }
 
         if (isDone) {

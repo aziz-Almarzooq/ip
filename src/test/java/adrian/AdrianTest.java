@@ -58,6 +58,39 @@ public class AdrianTest {
     }
 
     /**
+     * Verifies that a duration command adds a fixed-duration task.
+     */
+    @Test
+    public void getResponse_validDurationCommand_addsFixedDurationTask() {
+        Adrian adrian = createAdrian();
+
+        String response = adrian.getResponse("duration read sales report /for 120");
+
+        assertTrue(response.contains("[F][ ] read sales report (duration: 120 minutes)"));
+        assertTrue(adrian.getResponse("list")
+                .contains("1.[F][ ] read sales report (duration: 120 minutes)"));
+    }
+
+    /**
+     * Verifies that malformed duration commands return explanatory error responses.
+     */
+    @Test
+    public void getResponse_invalidDurationCommands_returnErrorResponses() {
+        Adrian adrian = createAdrian();
+
+        assertTrue(adrian.getResponse("duration read report")
+                .contains("Please specify the task duration using /for."));
+        assertTrue(adrian.getResponse("duration /for 60")
+                .contains("The description of a fixed-duration task cannot be empty."));
+        assertTrue(adrian.getResponse("duration read report /for")
+                .contains("The task duration cannot be empty."));
+        assertTrue(adrian.getResponse("duration read report /for two")
+                .contains("Please specify the duration as a whole number of minutes."));
+        assertTrue(adrian.getResponse("duration read report /for 0")
+                .contains("The task duration must be positive."));
+    }
+
+    /**
      * Verifies that saved tasks are available in a new Adrian session.
      */
     @Test
@@ -69,6 +102,22 @@ public class AdrianTest {
         Adrian secondSession = new Adrian(storage);
 
         assertTrue(secondSession.getResponse("list").contains("[T][ ] persisted task"));
+    }
+
+    /**
+     * Verifies that a completed fixed-duration task is restored in a new session.
+     */
+    @Test
+    public void constructor_savedFixedDurationTaskExists_loadsTask() {
+        Storage storage = new Storage(temporaryDirectory.resolve("data/adrian.txt"));
+        Adrian firstSession = new Adrian(storage);
+        firstSession.getResponse("duration read sales report /for 120");
+        firstSession.getResponse("mark 1");
+
+        Adrian secondSession = new Adrian(storage);
+
+        assertTrue(secondSession.getResponse("list")
+                .contains("[F][X] read sales report (duration: 120 minutes)"));
     }
 
     /**
