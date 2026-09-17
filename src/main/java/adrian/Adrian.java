@@ -279,6 +279,11 @@ public class Adrian {
 
         LocalDateTime startDateTime = parseDateTime(startDateTimeText);
         LocalDateTime endDateTime = parseDateTime(endDateTimeText);
+
+        if (!endDateTime.isAfter(startDateTime)) {
+            throw new InvalidInputException("The event end time must be after its start time.");
+        }
+
         return addTask(new Event(description, startDateTime, endDateTime));
     }
 
@@ -342,7 +347,14 @@ public class Adrian {
      */
     private String addTask(Task task) throws IOException {
         tasks.add(task);
-        storage.saveTasks(tasks);
+
+        try {
+            storage.saveTasks(tasks);
+        } catch (IOException e) {
+            tasks.remove(tasks.size() - 1);
+            throw e;
+        }
+
         return formatTaskAdded(task);
     }
 
@@ -357,8 +369,16 @@ public class Adrian {
     private String markTask(String input) throws InvalidInputException, IOException {
         int taskNumber = getTaskNumber(input, "mark", tasks.size());
         Task task = tasks.get(taskNumber - 1);
+        boolean wasDone = task.isDone();
         task.markAsDone();
-        storage.saveTasks(tasks);
+
+        try {
+            storage.saveTasks(tasks);
+        } catch (IOException e) {
+            restoreTaskStatus(task, wasDone);
+            throw e;
+        }
+
         return "Amaze! This mission task is complete:\n  " + task;
     }
 
@@ -373,8 +393,16 @@ public class Adrian {
     private String unmarkTask(String input) throws InvalidInputException, IOException {
         int taskNumber = getTaskNumber(input, "unmark", tasks.size());
         Task task = tasks.get(taskNumber - 1);
+        boolean wasDone = task.isDone();
         task.markAsNotDone();
-        storage.saveTasks(tasks);
+
+        try {
+            storage.saveTasks(tasks);
+        } catch (IOException e) {
+            restoreTaskStatus(task, wasDone);
+            throw e;
+        }
+
         return "Understood, Rocky. This task is back in the mission queue:\n  " + task;
     }
 
@@ -389,9 +417,30 @@ public class Adrian {
     private String deleteTask(String input) throws InvalidInputException, IOException {
         int taskNumber = getTaskNumber(input, "delete", tasks.size());
         Task removedTask = tasks.remove(taskNumber - 1);
-        storage.saveTasks(tasks);
+
+        try {
+            storage.saveTasks(tasks);
+        } catch (IOException e) {
+            tasks.add(taskNumber - 1, removedTask);
+            throw e;
+        }
+
         return "Task removed from the mission log, Rocky:\n  " + removedTask
                 + "\nMission log now has " + tasks.size() + " tasks.";
+    }
+
+    /**
+     * Restores a task's completion status after a failed save operation.
+     *
+     * @param task task whose status should be restored.
+     * @param wasDone completion status before the attempted update.
+     */
+    private static void restoreTaskStatus(Task task, boolean wasDone) {
+        if (wasDone) {
+            task.markAsDone();
+        } else {
+            task.markAsNotDone();
+        }
     }
 
     /**

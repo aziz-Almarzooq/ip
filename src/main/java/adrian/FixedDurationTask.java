@@ -12,10 +12,15 @@ public class FixedDurationTask extends Task {
      *
      * @param description description of the task.
      * @param durationInMinutes number of minutes needed to complete the task.
+     * @throws IllegalArgumentException if the duration is not positive.
      */
     public FixedDurationTask(String description, int durationInMinutes) {
         super(description, TaskType.FIXED_DURATION);
-        assert durationInMinutes > 0 : "Task duration must be positive";
+
+        if (durationInMinutes <= 0) {
+            throw new IllegalArgumentException("Task duration must be positive");
+        }
+
         this.durationInMinutes = durationInMinutes;
     }
 

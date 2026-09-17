@@ -1,9 +1,13 @@
 package adrian;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -55,6 +59,12 @@ public class AdrianTest {
         assertTrue(adrian.getResponse("mark 1").contains("That task number does not exist."));
         assertTrue(adrian.getResponse("deadline task /by tomorrow")
                 .contains("Please use date format yyyy-MM-dd HHmm."));
+        assertTrue(adrian.getResponse(
+                "event meeting /from 2026-09-11 1100 /to 2026-09-11 1000")
+                .contains("The event end time must be after its start time."));
+        assertTrue(adrian.getResponse(
+                "event meeting /from 2026-09-11 1100 /to 2026-09-11 1100")
+                .contains("The event end time must be after its start time."));
     }
 
     /**
@@ -106,6 +116,17 @@ public class AdrianTest {
     }
 
     /**
+     * Verifies that a missing data file starts Adrian with an empty task list.
+     */
+    @Test
+    public void constructor_dataFileMissing_startsWithEmptyTaskList() {
+        Adrian adrian = createAdrian();
+
+        assertFalse(adrian.getWelcomeMessage().startsWith("OOPS!!!"));
+        assertEquals("Rocky, here is our mission task list:", adrian.getResponse("list"));
+    }
+
+    /**
      * Verifies that a completed fixed-duration task is restored in a new session.
      */
     @Test
@@ -119,6 +140,53 @@ public class AdrianTest {
 
         assertTrue(secondSession.getResponse("list")
                 .contains("[F][X] read sales report (duration: 120 minutes)"));
+    }
+
+    /**
+     * Verifies that malformed saved data produces a loading error instead of crashing startup.
+     *
+     * @throws IOException if the test data file cannot be created.
+     */
+    @Test
+    public void constructor_malformedDataFile_showsLoadingErrorAndStartsEmpty() throws IOException {
+        Path dataFile = temporaryDirectory.resolve("data/adrian.txt");
+        Files.createDirectories(dataFile.getParent());
+        Files.writeString(dataFile, "E | 0 | broken event | not-a-date | also-not-a-date");
+
+        Adrian adrian = new Adrian(new Storage(dataFile));
+
+        assertTrue(adrian.getWelcomeMessage().contains("mission log could not be loaded"));
+        assertFalse(adrian.getResponse("list").contains("broken event"));
+    }
+
+    /**
+     * Verifies that failed saves restore the task list and completion statuses.
+     */
+    @Test
+    public void getResponse_saveFails_rollsBackTaskChanges() {
+        ControlledStorage storage = new ControlledStorage(
+                temporaryDirectory.resolve("data/adrian.txt"));
+        Adrian adrian = new Adrian(storage);
+
+        storage.setShouldFailSaves(true);
+        assertTrue(adrian.getResponse("todo unsaved task").contains("could not save"));
+        assertFalse(adrian.getResponse("list").contains("unsaved task"));
+
+        storage.setShouldFailSaves(false);
+        adrian.getResponse("todo stable task");
+
+        storage.setShouldFailSaves(true);
+        assertTrue(adrian.getResponse("mark 1").contains("could not save"));
+        assertTrue(adrian.getResponse("list").contains("[T][ ] stable task"));
+
+        storage.setShouldFailSaves(false);
+        adrian.getResponse("mark 1");
+
+        storage.setShouldFailSaves(true);
+        assertTrue(adrian.getResponse("unmark 1").contains("could not save"));
+        assertTrue(adrian.getResponse("list").contains("[T][X] stable task"));
+        assertTrue(adrian.getResponse("delete 1").contains("could not save"));
+        assertTrue(adrian.getResponse("list").contains("[T][X] stable task"));
     }
 
     /**
@@ -153,5 +221,29 @@ public class AdrianTest {
     private Adrian createAdrian() {
         Path dataFile = temporaryDirectory.resolve("data/adrian.txt");
         return new Adrian(new Storage(dataFile));
+    }
+
+    /**
+     * Provides controllable save failures for testing Adrian's rollback behavior.
+     */
+    private static class ControlledStorage extends Storage {
+        private boolean shouldFailSaves;
+
+        ControlledStorage(Path filePath) {
+            super(filePath);
+        }
+
+        void setShouldFailSaves(boolean shouldFailSaves) {
+            this.shouldFailSaves = shouldFailSaves;
+        }
+
+        @Override
+        public void saveTasks(List<Task> tasks) throws IOException {
+            if (shouldFailSaves) {
+                throw new IOException("Simulated save failure");
+            }
+
+            super.saveTasks(tasks);
+        }
     }
 }

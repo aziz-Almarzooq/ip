@@ -1,6 +1,7 @@
 package adrian;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -44,5 +45,18 @@ public class FixedDurationTaskTest {
         assertEquals(
                 "F | 0 | read sales report | 120",
                 task.toDataString());
+    }
+
+    /**
+     * Verifies that a fixed-duration task requires a positive duration.
+     */
+    @Test
+    public void constructor_nonPositiveDuration_throwsException() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new FixedDurationTask("read sales report", 0));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new FixedDurationTask("read sales report", -1));
     }
 }
