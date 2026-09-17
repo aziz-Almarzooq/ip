@@ -40,6 +40,15 @@ public class Task {
     }
 
     /**
+     * Returns whether this task has been completed.
+     *
+     * @return true if completed; false otherwise.
+     */
+    public boolean isDone() {
+        return isDone;
+    }
+
+    /**
      * Returns the symbol used to display this task's completion status.
      *
      * @return {@code X} if completed, or a space if incomplete.

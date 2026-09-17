@@ -1,6 +1,7 @@
 package adrian;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
 
@@ -54,5 +55,20 @@ public class EventTest {
         assertEquals(
                 "E | 0 | project meeting | 2026-08-06T14:00 | 2026-08-06T16:00",
                 event.toDataString());
+    }
+
+    /**
+     * Verifies that an event cannot end at or before its start time.
+     */
+    @Test
+    public void constructor_endNotAfterStart_throwsException() {
+        LocalDateTime startDateTime = LocalDateTime.of(2026, 8, 6, 14, 0);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Event("project meeting", startDateTime, startDateTime));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Event("project meeting", startDateTime, startDateTime.minusMinutes(1)));
     }
 }

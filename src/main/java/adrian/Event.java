@@ -21,9 +21,15 @@ public class Event extends Task {
      * @param description description of the event.
      * @param startDateTime date and time at which the event starts.
      * @param endDateTime date and time at which the event ends.
+     * @throws IllegalArgumentException if the event does not end after it starts.
      */
     public Event(String description, LocalDateTime startDateTime, LocalDateTime endDateTime) {
         super(description, TaskType.EVENT);
+
+        if (!endDateTime.isAfter(startDateTime)) {
+            throw new IllegalArgumentException("Event end time must be after its start time");
+        }
+
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
     }
