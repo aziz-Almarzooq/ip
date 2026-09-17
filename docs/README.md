@@ -1,10 +1,9 @@
-# adrian.Adrian User Guide
+# Adrian User Guide
 
-// Update the title above to match the actual product name
+Adrian is a space-mission task companion for Rocky. Its friendly, science-first personality is
+inspired by Andy Weir's *Project Hail Mary*.
 
 // Product screenshot goes here
-
-// Product intro goes here
 
 ## Adding deadlines
 

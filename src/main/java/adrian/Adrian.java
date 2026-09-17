@@ -12,10 +12,14 @@ import java.util.List;
  */
 public class Adrian {
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
-    private static final String WELCOME_MESSAGE = "Hello! I'm Adrian.\nWhat can I do for you?";
-    private static final String GOODBYE_MESSAGE = "Bye. Hope to see you again soon!";
-    private static final String LOADING_ERROR_MESSAGE = "OOPS!!! Could not load saved tasks.";
-    private static final String SAVING_ERROR_MESSAGE = "OOPS!!! Could not save tasks.";
+    private static final String WELCOME_MESSAGE =
+            "Adrian online. Hello, Rocky.\nMission tasks ready. Amaze. Amaze. Amaze.";
+    private static final String GOODBYE_MESSAGE =
+            "Mission log secured, Rocky. We science again soon!";
+    private static final String LOADING_ERROR_MESSAGE =
+            "OOPS!!! Rocky, the mission log could not be loaded.";
+    private static final String SAVING_ERROR_MESSAGE =
+            "OOPS!!! Rocky, I could not save the mission log.";
 
     private final Storage storage;
     private final ArrayList<Task> tasks;
@@ -101,7 +105,7 @@ public class Adrian {
         try {
             return executeCommand(input.trim());
         } catch (InvalidInputException e) {
-            return "OOPS!!! " + e.getMessage();
+            return "OOPS!!! Rocky, " + e.getMessage();
         } catch (IOException e) {
             return SAVING_ERROR_MESSAGE;
         }
@@ -131,7 +135,7 @@ public class Adrian {
         }
 
         if (input.equals("list")) {
-            return formatTaskList("Here are the tasks in your list:", tasks);
+            return formatTaskList("Rocky, here is our mission task list:", tasks);
         } else if (input.equals("find")) {
             throw new InvalidInputException("Please specify a keyword to find.");
         } else if (input.startsWith("find ")) {
@@ -192,7 +196,7 @@ public class Adrian {
             }
         }
 
-        return formatTaskList("Here are the matching tasks in your list:", matchingTasks);
+        return formatTaskList("I found these matching mission tasks, Rocky:", matchingTasks);
     }
 
     /**
@@ -355,7 +359,7 @@ public class Adrian {
         Task task = tasks.get(taskNumber - 1);
         task.markAsDone();
         storage.saveTasks(tasks);
-        return "Nice! I've marked this task as done:\n  " + task;
+        return "Amaze! This mission task is complete:\n  " + task;
     }
 
     /**
@@ -371,7 +375,7 @@ public class Adrian {
         Task task = tasks.get(taskNumber - 1);
         task.markAsNotDone();
         storage.saveTasks(tasks);
-        return "OK, I've marked this task as not done yet:\n  " + task;
+        return "Understood, Rocky. This task is back in the mission queue:\n  " + task;
     }
 
     /**
@@ -386,8 +390,8 @@ public class Adrian {
         int taskNumber = getTaskNumber(input, "delete", tasks.size());
         Task removedTask = tasks.remove(taskNumber - 1);
         storage.saveTasks(tasks);
-        return "Noted. I've removed this task:\n  " + removedTask
-                + "\nNow you have " + tasks.size() + " tasks in the list.";
+        return "Task removed from the mission log, Rocky:\n  " + removedTask
+                + "\nMission log now has " + tasks.size() + " tasks.";
     }
 
     /**
@@ -438,8 +442,8 @@ public class Adrian {
         assert task != null : "Added task must not be null";
         assert tasks.contains(task) : "Task must be added before formatting confirmation";
 
-        return "Got it. I've added this task:\n  " + task
-                + "\nNow you have " + tasks.size() + " tasks in the list.";
+        return "Amaze. Amaze. Amaze. New mission task recorded:\n  " + task
+                + "\nMission log now has " + tasks.size() + " tasks.";
     }
 
     /**

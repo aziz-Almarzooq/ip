@@ -66,6 +66,7 @@ public class AdrianTest {
 
         String response = adrian.getResponse("duration read sales report /for 120");
 
+        assertTrue(response.contains("Amaze. Amaze. Amaze."));
         assertTrue(response.contains("[F][ ] read sales report (duration: 120 minutes)"));
         assertTrue(adrian.getResponse("list")
                 .contains("1.[F][ ] read sales report (duration: 120 minutes)"));
@@ -127,8 +128,21 @@ public class AdrianTest {
     public void getResponse_bye_requestsExit() {
         Adrian adrian = createAdrian();
 
-        assertTrue(adrian.getResponse("bye").contains("Bye."));
+        assertTrue(adrian.getResponse("bye").contains("Mission log secured, Rocky."));
         assertTrue(adrian.isExitRequested());
+    }
+
+    /**
+     * Verifies that the welcome message establishes Adrian and Rocky's mission partnership.
+     */
+    @Test
+    public void getWelcomeMessage_newSession_usesMissionPersonality() {
+        Adrian adrian = createAdrian();
+
+        String welcomeMessage = adrian.getWelcomeMessage();
+
+        assertTrue(welcomeMessage.contains("Adrian online. Hello, Rocky."));
+        assertTrue(welcomeMessage.contains("Amaze. Amaze. Amaze."));
     }
 
     /**
